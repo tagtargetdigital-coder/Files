@@ -1,0 +1,32 @@
+function formatLastNameSetCookie() {
+  // Seleciona o campo pelo ID (substitua conforme necessário)
+  var nameField = document.querySelector('[id="fullname"]'); 
+
+  // Verifica se o campo existe e tem um valor
+  if (nameField && nameField.value.trim() !== '') {
+    var name = nameField.value.trim().toLowerCase();
+
+    // Divide o nome em partes usando espaço como delimitador
+    var names = name.split(' ');
+
+    // Captura o último nome, se houver mais de um
+    if (names.length > 1) {
+      var lastName = names[names.length - 1]
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Remove acentos
+        .replace(/[^a-zA-Z]/g, ""); // Mantém apenas letras
+
+      // Define a expiração do cookie para 30 dias a partir de agora
+      var expirationDate = new Date();
+      expirationDate.setDate(expirationDate.getDate() + 30);
+
+      // Define o cookie como primário, válido para todo o site
+      document.cookie = "LeadLastName=" + encodeURIComponent(lastName) + 
+                        "; expires=" + expirationDate.toUTCString() + 
+                        "; path=/";
+
+      return lastName;
+    }
+  }
+
+  return ''; // Retorna string vazia caso não haja sobrenome
+}
