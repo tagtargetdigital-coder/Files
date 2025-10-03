@@ -1,0 +1,27 @@
+function formatFirstNameSetCookie() {
+  // Seleciona o campo pelo ID (substitua conforme necessário)
+  var nameField = document.querySelector('[id="fullname"]');
+
+  // Verifica se o campo existe e contém um valor
+  if (nameField && nameField.value.trim() !== '') {
+    var fullname = nameField.value.trim().toLowerCase();
+
+    // Captura apenas o primeiro nome, removendo acentos e caracteres especiais
+    var firstName = fullname.split(' ')[0]
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Remove acentos
+      .replace(/[^a-zA-Z]/g, ""); // Mantém apenas letras
+
+    // Define a expiração do cookie para 30 dias a partir de agora
+    var expirationDate = new Date();
+    expirationDate.setDate(expirationDate.getDate() + 30);
+
+    // Define o cookie como primário, válido para todo o site
+    document.cookie = "LeadFirstName=" + encodeURIComponent(firstName) + 
+                      "; expires=" + expirationDate.toUTCString() + 
+                      "; path=/";
+
+    return firstName;
+  }
+
+  return undefined;
+}
